@@ -7,7 +7,8 @@ public class Plant {
     private LocalDate lastWateredDate;
 
 
-    public Plant(String name, LocalDate lastWateredDate) {
+    public Plant(Long id, String name, LocalDate lastWateredDate) {
+        this.id = id;
         this.name = name;
         this.lastWateredDate = lastWateredDate;
     }
