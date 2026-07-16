@@ -26,4 +26,14 @@ public class PlantService {
     public void removePlant(Long id) {
         plants.removeIf(plant -> plant.getId().equals(id));
     }
+
+    public void changePlant(Long id, Plant plant) {
+        for (Plant singlePlant : plants){
+            if (singlePlant.getId().equals(id)) {
+                singlePlant.setName(plant.getName());
+                singlePlant.setLastWateredDate(plant.getLastWateredDate());
+                break;
+            }
+        }
+    }
 }
