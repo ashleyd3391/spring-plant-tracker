@@ -22,4 +22,8 @@ public class PlantService {
     public List<Plant> getAllPlants(){
         return plants;
     }
+
+    public void removePlant(Long id) {
+        plants.removeIf(plant -> plant.getId().equals(id));
+    }
 }

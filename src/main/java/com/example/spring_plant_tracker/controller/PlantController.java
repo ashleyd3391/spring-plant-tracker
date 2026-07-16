@@ -23,5 +23,10 @@ public class PlantController {
     public Plant addPlant(@RequestBody Plant plant){
         return plantService.addPlant(plant.getName(), plant.getLastWateredDate());
     }
+
+    @DeleteMapping("/plants/{id}")
+    public void deletePlant(@PathVariable Long id){
+        plantService.removePlant(id);
+    }
 }
 
