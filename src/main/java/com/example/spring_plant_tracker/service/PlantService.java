@@ -1,39 +1,38 @@
 package com.example.spring_plant_tracker.service;
 import com.example.spring_plant_tracker.model.Plant;
+import com.example.spring_plant_tracker.repository.PlantRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class PlantService {
-    private final List<Plant> plants = new ArrayList<>();
-    private final AtomicLong idCounter = new AtomicLong();
+    private final PlantRepository plantRepository;
+
+    public PlantService(PlantRepository plantRepository) {
+        this.plantRepository = plantRepository;
+    }
 
     public Plant addPlant(String name, LocalDate lastWateredDate){
-        Long id = idCounter.incrementAndGet();
-        Plant plant = new Plant(id, name, lastWateredDate);
-        plants.add(plant);
-        return plant;
+        Plant plant = new Plant(null, name, lastWateredDate);
+        return plantRepository.save(plant);
     }
 
     public List<Plant> getAllPlants(){
-        return plants;
+        return plantRepository.findAll();
     }
 
     public void removePlant(Long id) {
-        plants.removeIf(plant -> plant.getId().equals(id));
+        plantRepository.deleteById(id);
     }
 
     public void changePlant(Long id, Plant plant) {
-        for (Plant singlePlant : plants){
-            if (singlePlant.getId().equals(id)) {
-                singlePlant.setName(plant.getName());
-                singlePlant.setLastWateredDate(plant.getLastWateredDate());
-                break;
-            }
-        }
+       Plant plantEntry = plantRepository.findById(id).orElse(null);
+       if (plantEntry != null){
+           plantEntry.setName(plant.getName());
+           plantEntry.setLastWateredDate(plant.getLastWateredDate());
+           plantRepository.save(plantEntry);
+       }
     }
 }
